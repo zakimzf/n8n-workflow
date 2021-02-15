@@ -165,6 +165,7 @@ export class NodeApiError extends NodeError {
 		this.setMessage();
 
 		this.description = this.findProperty(error, ERROR_MESSAGE_PROPERTIES, ERROR_NESTING_PROPERTIES);
+		console.log(this.description);
 	}
 
 	/**
