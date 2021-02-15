@@ -4,6 +4,9 @@ import {
 	IStatusCodeMessages,
 } from 'n8n-workflow';
 
+/**
+ * Top-level properties where an error message can be found in an API response.
+ */
 const ERROR_MESSAGE_PROPERTIES = [
 	'message',
 	'Message',
@@ -27,12 +30,25 @@ const ERROR_MESSAGE_PROPERTIES = [
 	'type',
 ];
 
+/**
+ * Top-level properties where an HTTP error code can be found in an API response.
+ */
 const ERROR_CODE_PROPERTIES = ['statusCode', 'status', 'code', 'status_code', 'errorCode', 'error_code'];
 
+/**
+ * Properties in nested objects where an error message or code can be found in an API response.
+ */
 const ERROR_NESTING_PROPERTIES = ['error', 'err', 'response', 'body', 'data'];
 
+/**
+ * Properties in nested objects where multiple error messages can be found in an API response.
+ */
 const MULTI_MESSAGE_PROPERTIES = ['messages', 'errors', 'errorMessages'];
 
+/**
+ * Abstract class from which `NodeOperationError` and `NodeApiError` inherit,
+ * with functionality for finding a value recursively inside an error object.
+ */
 abstract class NodeError extends Error {
 	description: string | null | undefined;
 	cause: Error | IErrorObject;
@@ -85,6 +101,9 @@ abstract class NodeError extends Error {
 	}
 }
 
+/**
+ * Class for instantiating an operational error, e.g. an invalid credentials error.
+ */
 export class NodeOperationError extends NodeError {
 
 	constructor(node: INode, error: Error | string) {
@@ -115,6 +134,10 @@ const STATUS_CODE_MESSAGES: IStatusCodeMessages = {
 
 const UNKNOWN_ERROR_MESSAGE = 'UNKNOWN ERROR - check the detailed error for more information';
 
+/**
+ * Class for instantiating an error in an API response, e.g. a 404 Not Found response,
+ * with an HTTP error code, an error message and a description (stack trace header).
+ */
 export class NodeApiError extends NodeError {
 	httpCode: string | null;
 
